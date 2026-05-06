@@ -1,13 +1,43 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+import java.awt.*;
+import javax.swing.*;
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+public class Main {
+    private JFrame frame;
+    private JLabel label;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private int width;
+    private int height;
+
+    public Main(int w, int h){
+        frame = new JFrame();
+        label = new JLabel("Study Tracker app", SwingConstants.CENTER);
+        button1 = new JButton("View logs");
+        button2 = new JButton("Start");
+        button3 = new JButton("Stop");
+
+        width = w;
+        height = h;
+    }
+
+    public void setUpGUI() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+
+        buttonPanel.add(button1);
+        buttonPanel.add(button2);
+        buttonPanel.add(button3);
+
+        Container cp = frame.getContentPane();
+        cp.setLayout(new BorderLayout());
+
+        cp.add(label, BorderLayout.NORTH);
+        cp.add(buttonPanel,BorderLayout.SOUTH);
+
+        frame.setSize(width,height);
+        frame.setTitle("GUI Demo");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }
