@@ -7,15 +7,17 @@ public class Main {
     private JButton button1;
     private JButton button2;
     private JButton button3;
+    private JButton button4;
     private int width;
     private int height;
 
     public Main(int w, int h){
         frame = new JFrame();
         label = new JLabel("Study Tracker app", SwingConstants.CENTER);
-        button1 = new JButton("View logs");
+        button1 = new JButton("View sessions");
         button2 = new JButton("Start");
-        button3 = new JButton("Stop");
+        button3 = new JButton("End");
+        button4 = new JButton("Break");
 
         width = w;
         height = h;
@@ -27,6 +29,7 @@ public class Main {
 
         buttonPanel.add(button1);
         buttonPanel.add(button2);
+        buttonPanel.add(button4);
         buttonPanel.add(button3);
 
         Container cp = frame.getContentPane();
