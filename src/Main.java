@@ -10,7 +10,7 @@ public class Main {
     private JButton button4;
     private int width;
     private int height;
-//test
+
     public Main(int w, int h){
         frame = new JFrame();
         label = new JLabel("Study Tracker app", SwingConstants.CENTER);

@@ -5,4 +5,3 @@ public class GUITester {
         gd.setUpGUI();
     }
 }
-//bandymas
