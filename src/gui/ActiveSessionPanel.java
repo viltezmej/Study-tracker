@@ -1,5 +1,7 @@
 package gui;
 
+import logic.SessionManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,12 +13,19 @@ import java.awt.*;
 public class ActiveSessionPanel extends JPanel{
     private MainFrame mainFrame;
     private JLabel timerLabel;
+    private JLabel statusLabel;
     private JButton endButton;
     private JButton breakButton;
     private int targetMinutes;
+    private Timer swingTimer;
+    private SessionManager sessionManager;
 
-    public ActiveSessionPanel(MainFrame mainFrame){
+
+
+    public ActiveSessionPanel(MainFrame mainFrame, SessionManager sessionManager){
         this.mainFrame = mainFrame;
+        this.sessionManager = sessionManager;
+
         setBackground(Theme.BACKGROUND);
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
@@ -24,12 +33,34 @@ public class ActiveSessionPanel extends JPanel{
         timerLabel.setFont(Theme.FONT_TIMER);
         timerLabel.setForeground(Theme.TEXT_PRIMARY);
 
+        statusLabel = new JLabel("Studying in progress", SwingConstants.CENTER);
+        statusLabel.setFont(Theme.FONT_BODY);
+        statusLabel.setForeground(Theme.TEXT_PRIMARY);
+
         endButton = createEndButton("End Session");
         breakButton = createSecondaryButton("Break");
 
-        //TODO: ending should also call SessionManager. It currently just navigates bacK
-        // so no session data or XP penalty is recorded
-        endButton.addActionListener(e -> mainFrame.showCard("home"));
+        swingTimer = new Timer(1000, e -> updateTimer());
+
+        endButton.addActionListener(e -> mainFrame.endActiveSession());
+
+        breakButton.addActionListener(e -> {
+            sessionManager.toggleBreak();
+            updateStatus();
+        });
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBackground(Theme.BACKGROUND);
+
+        timerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(Box.createVerticalGlue());
+        centerPanel.add(timerLabel);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(statusLabel);
+        centerPanel.add(Box.createVerticalGlue());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
@@ -38,8 +69,21 @@ public class ActiveSessionPanel extends JPanel{
         buttonPanel.add(endButton);
 
         setLayout(new BorderLayout());
-        add(timerLabel, BorderLayout.CENTER);
+        add(centerPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
+//        //TODO: ending should also call SessionManager. It currently just navigates bacK
+//        // so no session data or XP penalty is recorded
+//        endButton.addActionListener(e -> mainFrame.showCard("home"));
+//
+//        JPanel buttonPanel = new JPanel();
+//        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
+//        buttonPanel.setBackground(Theme.BACKGROUND);
+//        buttonPanel.add(breakButton);
+//        buttonPanel.add(endButton);
+//
+//        setLayout(new BorderLayout());
+//        add(timerLabel, BorderLayout.CENTER);
+//        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     //sets how long this session should run. call before showing panel.
@@ -50,6 +94,54 @@ public class ActiveSessionPanel extends JPanel{
     public void setDuration(int minutes){
         this.targetMinutes = minutes;
         timerLabel.setText(formatTime(minutes * 60));
+    }
+
+    //start the visual timer
+
+    public void startTimer(){
+        timerLabel.setText(formatTime(sessionManager.getRemainingTime()));
+        statusLabel.setText("Studying in progress");
+        breakButton.setText("Break");
+
+        if(swingTimer.isRunning()){
+            swingTimer.stop();
+        }
+
+        swingTimer.start();
+    }
+
+    //stop thge visual timer
+
+    public void stopTimer(){
+        if(swingTimer.isRunning()){
+            swingTimer.stop();
+        }
+    }
+
+    //update timer once per second
+
+    private void updateTimer(){
+        sessionManager.tick();
+        timerLabel.setText(formatTime(sessionManager.getRemainingTime()));
+        updateStatus();
+
+        if(sessionManager.isFinished()){
+            stopTimer();
+
+            //TODO: this should save completed session
+            JOptionPane.showMessageDialog(this, "Study session complete!", "Good job ;)", JOptionPane.INFORMATION_MESSAGE);
+            mainFrame.showCard("home");
+        }
+    }
+
+    private void updateStatus(){
+        if(sessionManager.isOnBreak()){
+            statusLabel.setText("Break time");
+            breakButton.setText("Resume");
+        }else{
+            statusLabel.setText("Studying in progress");
+            breakButton.setText("Break");
+        }
     }
 
     //formats a number of seconds as HH:MM:SS

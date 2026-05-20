@@ -1,5 +1,7 @@
 package gui;
 
+import logic.SessionManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,6 +19,7 @@ public class MainFrame {
     private HomePanel homePanel;
     private ActiveSessionPanel activeSessionPanel;
     private SessionSetupPanel sessionSetupPanel;
+    private SessionManager sessionManager;
     private int width;
     private int height;
 
@@ -25,12 +28,14 @@ public class MainFrame {
         height = h;
         frame = new JFrame();
 
+        sessionManager = new SessionManager();
+
         cardLayout = new CardLayout();
         cardContainer = new JPanel(cardLayout);
 
         homePanel = new HomePanel(this);
         sessionSetupPanel = new SessionSetupPanel(this);
-        activeSessionPanel = new ActiveSessionPanel(this);
+        activeSessionPanel = new ActiveSessionPanel(this, sessionManager);
 
         cardContainer.add(homePanel, "home");
         cardContainer.add(sessionSetupPanel, "setup");
@@ -59,7 +64,18 @@ public class MainFrame {
     // MainFrame coordinates between GUI and logic
 
     public void startActiveSession(int minutes) {
-        activeSessionPanel.setDuration(minutes);
+        sessionManager.startSession(minutes);
+        //activeSessionPanel.setDuration(minutes);
+        activeSessionPanel.startTimer();
         showCard("active");
+    }
+
+    public void endActiveSession(){
+        activeSessionPanel.stopTimer();
+        sessionManager.endSessionEarly();
+
+        //TODO: later same session log and also update EXP
+
+        showCard("home");
     }
 }
