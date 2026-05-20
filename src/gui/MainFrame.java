@@ -46,6 +46,7 @@ public class MainFrame {
         cardContainer.add(sessionSetupPanel, "setup");
         cardContainer.add(activeSessionPanel, "active");
         cardContainer.add(sessionPanel, "sessions");
+
     }
 
     //configures the frame and makes it visible, called once at startup
@@ -54,7 +55,9 @@ public class MainFrame {
         frame.setSize(width,height);
         frame.setTitle("Study Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        cardLayout.show(cardContainer, "home"); //start on homescreen
+
+        showCard("home");
+
         frame.setVisible(true);
     }
 

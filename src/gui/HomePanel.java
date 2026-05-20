@@ -52,6 +52,8 @@ public class HomePanel extends JPanel{
         add(label, BorderLayout.NORTH);
         add(statsLabel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
+
+        refreshStats();
     }
 
     public void refreshStats(){
