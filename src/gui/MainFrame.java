@@ -20,6 +20,7 @@ public class MainFrame {
     private ActiveSessionPanel activeSessionPanel;
     private SessionSetupPanel sessionSetupPanel;
     private SessionManager sessionManager;
+    private SessionPanel sessionPanel;
     private int width;
     private int height;
 
@@ -36,10 +37,12 @@ public class MainFrame {
         homePanel = new HomePanel(this);
         sessionSetupPanel = new SessionSetupPanel(this);
         activeSessionPanel = new ActiveSessionPanel(this, sessionManager);
+        sessionPanel = new SessionPanel(this, sessionManager);
 
         cardContainer.add(homePanel, "home");
         cardContainer.add(sessionSetupPanel, "setup");
         cardContainer.add(activeSessionPanel, "active");
+        cardContainer.add(sessionPanel, "sessions");
     }
 
     //configures the frame and makes it visible, called once at startup
@@ -63,19 +66,33 @@ public class MainFrame {
     //TODO: also call sessionManager here once SessionManager exists
     // MainFrame coordinates between GUI and logic
 
-    public void startActiveSession(int minutes) {
-        sessionManager.startSession(minutes);
-        //activeSessionPanel.setDuration(minutes);
+    public void startActiveSession(int minutes, String subjectName) {
+        sessionManager.startSession(minutes, subjectName);
+        activeSessionPanel.setDuration(minutes);
         activeSessionPanel.startTimer();
         showCard("active");
+    }
+
+    public void completeActiveSession() {
+        activeSessionPanel.stopTimer();
+        sessionManager.saveCurrentSession(true);
+        sessionPanel.refresh();
+        showCard("home");
     }
 
     public void endActiveSession(){
         activeSessionPanel.stopTimer();
         sessionManager.endSessionEarly();
+        sessionManager.saveCurrentSession(false);
+        sessionPanel.refresh();
 
         //TODO: later same session log and also update EXP
 
         showCard("home");
+    }
+
+    public void showSessions() {
+        sessionPanel.refresh();
+        showCard("sessions");
     }
 }

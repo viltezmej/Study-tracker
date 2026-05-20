@@ -19,6 +19,8 @@ public class SessionSetupPanel extends JPanel {
     private JButton preset60;
     private JButton beginButton;
     private JButton cancelButton;
+    private JLabel subjectLabel;
+    private JTextField subjectField;
 
     public SessionSetupPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -62,6 +64,22 @@ public class SessionSetupPanel extends JPanel {
         beginButton.addActionListener(e -> handleBeginClicked());
         cancelButton.addActionListener(e -> mainFrame.showCard("home"));
 
+
+        //enter subject name
+        subjectLabel = new JLabel("Subject name (optional)", SwingConstants.CENTER);
+        subjectLabel.setFont(Theme.FONT_BODY);
+        subjectLabel.setForeground(Theme.TEXT_PRIMARY);
+
+        subjectField = new JTextField(15);
+        subjectField.setHorizontalAlignment(SwingConstants.CENTER);
+        subjectField.setFont(Theme.FONT_BODY);
+        subjectField.setBackground(Theme.SURFACE);
+        subjectField.setForeground(Theme.TEXT_PRIMARY);
+        subjectField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Theme.BORDER, 1),
+                BorderFactory.createEmptyBorder(8, 12, 8, 12)
+        ));
+
         //preset row
         JPanel presetPanel = new JPanel();
         presetPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
@@ -88,10 +106,16 @@ public class SessionSetupPanel extends JPanel {
         promptLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         minutesField.setAlignmentX(Component.CENTER_ALIGNMENT);
         minutesField.setMaximumSize(new Dimension(150, 40));
+
+        subjectLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subjectField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subjectField.setMaximumSize(new Dimension(220, 40));
+
         presetPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         presetPanel.setMaximumSize(presetPanel.getPreferredSize());
         actionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         actionPanel.setMaximumSize(actionPanel.getPreferredSize());
+
 
         contentPanel.add(Box.createVerticalGlue());
         contentPanel.add(titleLabel);
@@ -101,6 +125,10 @@ public class SessionSetupPanel extends JPanel {
         contentPanel.add(minutesField);
         contentPanel.add(Box.createVerticalStrut(15));
         contentPanel.add(presetPanel);
+        contentPanel.add(Box.createVerticalStrut(15));
+        contentPanel.add(subjectLabel);
+        contentPanel.add(Box.createVerticalStrut(10));
+        contentPanel.add(subjectField);
         contentPanel.add(Box.createVerticalStrut(25));
         contentPanel.add(actionPanel);
         contentPanel.add(Box.createVerticalGlue());
@@ -113,6 +141,7 @@ public class SessionSetupPanel extends JPanel {
     //once timer is real, this function will also need to be called for ActiveSessionPanel
     public void reset(){
         minutesField.setText("");
+        subjectField.setText("");
     }
 
     //validates the duration input and starts a session if valid
@@ -132,7 +161,8 @@ public class SessionSetupPanel extends JPanel {
             showError("Please enter a positive number of minutes.");
             return;
         }
-        mainFrame.startActiveSession(minutes);
+        String subjectName = subjectField.getText().trim();
+        mainFrame.startActiveSession(minutes, subjectName);
     }
 
     private void showError(String message) {

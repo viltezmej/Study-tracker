@@ -30,6 +30,7 @@ public class HomePanel extends JPanel{
 
         //button actions
         startButton.addActionListener(e -> mainFrame.showCard("setup"));
+        viewSessionsButton.addActionListener(e -> mainFrame.showSessions());
 
         //TODO: will display level, EXP and sessions completed once we have StatsCalculator
         statsLabel = new JLabel("<html><div style='text-align: center;'>Welcome back!<br><br>Your stats will appear here.</div></html>", SwingConstants.CENTER);

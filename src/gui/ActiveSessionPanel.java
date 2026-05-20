@@ -123,14 +123,10 @@ public class ActiveSessionPanel extends JPanel{
     private void updateTimer(){
         sessionManager.tick();
         timerLabel.setText(formatTime(sessionManager.getRemainingTime()));
-        updateStatus();
 
         if(sessionManager.isFinished()){
             stopTimer();
-
-            //TODO: this should save completed session
-            JOptionPane.showMessageDialog(this, "Study session complete!", "Good job ;)", JOptionPane.INFORMATION_MESSAGE);
-            mainFrame.showCard("home");
+            mainFrame.completeActiveSession();
         }
     }
 
