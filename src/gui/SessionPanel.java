@@ -68,7 +68,7 @@ public class SessionPanel extends JPanel {
         StringBuilder text = new StringBuilder();
 
         text.append(String.format("%-17s %-18s %-12s %-10s\n",
-                "Date", "SubjectName", "TimeStudied", "EXPearned"));
+                "Date", "Subject", "Time", "EXP"));
         text.append("------------------------------------------------------------\n");
 
         for (SessionLog log : logs) {

@@ -1,5 +1,7 @@
 package gui;
 
+import logic.StatsCalculator;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,9 +16,11 @@ public class HomePanel extends JPanel{
     private JLabel statsLabel;
     private JButton viewSessionsButton;
     private JButton startButton;
+    private StatsCalculator statsCalculator;
 
-    public HomePanel(MainFrame mainFrame){
+    public HomePanel(MainFrame mainFrame, StatsCalculator statsCalculator){
         this.mainFrame = mainFrame;
+        this.statsCalculator = statsCalculator;
 
         setBackground(Theme.BACKGROUND);
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
@@ -32,8 +36,8 @@ public class HomePanel extends JPanel{
         startButton.addActionListener(e -> mainFrame.showCard("setup"));
         viewSessionsButton.addActionListener(e -> mainFrame.showSessions());
 
-        //TODO: will display level, EXP and sessions completed once we have StatsCalculator
-        statsLabel = new JLabel("<html><div style='text-align: center;'>Welcome back!<br><br>Your stats will appear here.</div></html>", SwingConstants.CENTER);
+        //statsLabel = new JLabel("<html><div style='text-align: center;'>Welcome back!<br><br>Your stats will appear here.</div></html>", SwingConstants.CENTER);
+        statsLabel = new JLabel("", SwingConstants.CENTER);
         statsLabel.setFont(Theme.FONT_BUTTON);
         statsLabel.setForeground(Theme.TEXT_PRIMARY);
 
@@ -48,6 +52,34 @@ public class HomePanel extends JPanel{
         add(label, BorderLayout.NORTH);
         add(statsLabel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    public void refreshStats(){
+        int currentLevel = statsCalculator.getCurrentLevel();
+        String currentTitle = statsCalculator.getCurrentTitle();
+        int totalExp = statsCalculator.getTotalExp();
+        int expNeeded = statsCalculator.getExpNeededForNextLevel();
+
+        String text;
+
+        if (currentLevel == 20){
+            text = "<html><div style='text-align: center;'>"
+                    + "Lvl 20 " + currentTitle
+                    + "<br><br>Total EXP: " + totalExp
+                    + "<br>Max level reached!"
+                    + "</div></html>";
+        } else {
+            int nextLevel = statsCalculator.getNextLevel();
+            String nextTitle = statsCalculator.getNextTitle();
+
+            text = "<html><div style='text-align: center;'>"
+                    + "Lvl " + currentLevel + " " + currentTitle
+                    + "<br><br>Total EXP: " + totalExp
+                    + "<br>" + expNeeded + " EXP needed for Lvl " + nextLevel + " " + nextTitle
+                    + "</div></html>";
+        }
+
+        statsLabel.setText(text);
     }
 
     private JButton createPrimaryButton(String text) {

@@ -78,12 +78,11 @@ public class SessionManager {
         //TODO: trigger EXP penalty in StatsCalculator
     }
 
-    public void saveCurrentSession(boolean completed){
+    public void saveCurrentSession(int expEarned){
         if (currentSessionSaved){
             return;
         }
 
-        int expEarned = calculateExp(completed);
         SessionLog log = new SessionLog(currentSubject, studiedTime, expEarned);
         sessionLogs.add(log);
 
@@ -91,17 +90,17 @@ public class SessionManager {
         //TODO: later save this log using FileHandler
     }
 
-    private int calculateExp(boolean completed) {
-        int studiedMinutes = studiedTime / 60;
-
-        if (completed) {
-            return studiedMinutes;
-        }
-
-        //temp penalty until the final lvl system is implemented
-        //TODO: decide exact penalty
-        return -5;
-    }
+//    private int calculateExp(boolean completed) {
+//        int studiedMinutes = studiedTime / 60;
+//
+//        if (completed) {
+//            return studiedMinutes;
+//        }
+//
+//        //temp penalty until the final lvl system is implemented
+//        //TODO: decide exact penalty
+//        return -5;
+//    }
 
     public ArrayList<SessionLog> getSessionLogs(){
         return sessionLogs;

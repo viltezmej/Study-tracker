@@ -1,6 +1,7 @@
 package gui;
 
 import logic.SessionManager;
+import logic.StatsCalculator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,7 @@ public class MainFrame {
     private SessionSetupPanel sessionSetupPanel;
     private SessionManager sessionManager;
     private SessionPanel sessionPanel;
+    private StatsCalculator statsCalculator;
     private int width;
     private int height;
 
@@ -30,11 +32,12 @@ public class MainFrame {
         frame = new JFrame();
 
         sessionManager = new SessionManager();
+        statsCalculator = new StatsCalculator();
 
         cardLayout = new CardLayout();
         cardContainer = new JPanel(cardLayout);
 
-        homePanel = new HomePanel(this);
+        homePanel = new HomePanel(this, statsCalculator);
         sessionSetupPanel = new SessionSetupPanel(this);
         activeSessionPanel = new ActiveSessionPanel(this, sessionManager);
         sessionPanel = new SessionPanel(this, sessionManager);
@@ -59,6 +62,15 @@ public class MainFrame {
         if(name.equals("setup")){
             sessionSetupPanel.reset();
         }
+
+        if(name.equals("home")){
+            homePanel.refreshStats();
+        }
+
+        if(name.equals("sessions")){
+            sessionPanel.refresh();
+        }
+
         cardLayout.show(cardContainer, name);
     }
 
@@ -75,18 +87,29 @@ public class MainFrame {
 
     public void completeActiveSession() {
         activeSessionPanel.stopTimer();
-        sessionManager.saveCurrentSession(true);
+
+        int expEarned = statsCalculator.calculateCompletedSessionExp(sessionManager.getStudiedTime());
+        statsCalculator.addExp(expEarned);
+
+        sessionManager.saveCurrentSession(expEarned);
+
         sessionPanel.refresh();
+        homePanel.refreshStats();
+
         showCard("home");
     }
 
     public void endActiveSession(){
         activeSessionPanel.stopTimer();
         sessionManager.endSessionEarly();
-        sessionManager.saveCurrentSession(false);
-        sessionPanel.refresh();
 
-        //TODO: later same session log and also update EXP
+        int expEarned = statsCalculator.calculatEarlyEndPenalty(sessionManager.getStudiedTime());
+        statsCalculator.addExp(expEarned); //this will be negative
+
+        sessionManager.saveCurrentSession(expEarned);
+
+        sessionPanel.refresh();
+        homePanel.refreshStats();
 
         showCard("home");
     }
