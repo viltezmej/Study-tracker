@@ -9,8 +9,6 @@ import java.awt.*;
 /**
  * owns the JFrame, switches between panels using CardLayout(home, active session, etc.)
  * part of the presentation layer(refer to structure diagram)
- * TODO: mainframe will eventually need a reference to StudyTrackerCore (the logic layer coordinator)
- *  and pass it down to panels that need it. Currently panels only know abt MainFrame
  */
 
 public class MainFrame {

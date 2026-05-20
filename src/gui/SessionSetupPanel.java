@@ -47,13 +47,13 @@ public class SessionSetupPanel extends JPanel {
         ));
 
         //TODO: preset are currently hardcoded and they could come from the logic layer.
-        preset15 = createPresetButton("15");
-        preset30 = createPresetButton("30");
-        preset45 = createPresetButton("45");
-        preset60 = createPresetButton("60");
+        preset15 = ButtonCreator.preset("15");
+        preset30 = ButtonCreator.preset("30");
+        preset45 = ButtonCreator.preset("45");
+        preset60 = ButtonCreator.preset("60");
 
-        beginButton = createPrimaryButton("Begin");
-        cancelButton = createSecondaryButton("Cancel");
+        beginButton = ButtonCreator.primary("Begin");
+        cancelButton = ButtonCreator.secondary("Cancel");
 
         //preset buttons fill the text field
         preset15.addActionListener(e -> minutesField.setText("15"));
@@ -167,39 +167,5 @@ public class SessionSetupPanel extends JPanel {
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Invalid input", JOptionPane.WARNING_MESSAGE);
-    }
-
-    //TODO: button functions repeat across classes. should create a ButtonCreator class
-    private JButton createPrimaryButton(String text) {
-        JButton b = new JButton(text);
-        b.setFont(Theme.FONT_BUTTON);
-        b.setBackground(Theme.ACCENT);
-        b.setForeground(Theme.TEXT_ACCENT);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createEmptyBorder(10, 24, 10, 24));
-        return b;
-    }
-
-    private JButton createSecondaryButton(String text) {
-        JButton b = new JButton(text);
-        b.setFont(Theme.FONT_BUTTON);
-        b.setBackground(Theme.ACCENT_LIGHT);
-        b.setForeground(Theme.TEXT_PRIMARY);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createEmptyBorder(10, 24, 10, 24));
-        return b;
-    }
-
-    private JButton createPresetButton(String text) {
-        JButton b = new JButton(text);
-        b.setFont(Theme.FONT_LARGE);
-        b.setBackground(Theme.SURFACE);
-        b.setForeground(Theme.TEXT_PRIMARY);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Theme.BORDER, 1),
-                BorderFactory.createEmptyBorder(14, 22, 14, 22)
-        ));
-        return b;
     }
 }

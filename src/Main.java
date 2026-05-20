@@ -1,8 +1,6 @@
 import gui.MainFrame;
 
-/**
- * Creates the main window and launches the GUI
- */
+
 
 public class Main {
 

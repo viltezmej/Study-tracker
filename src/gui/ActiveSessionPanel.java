@@ -110,7 +110,7 @@ public class ActiveSessionPanel extends JPanel{
         swingTimer.start();
     }
 
-    //stop thge visual timer
+    //stop the visual timer
 
     public void stopTimer(){
         if(swingTimer.isRunning()){

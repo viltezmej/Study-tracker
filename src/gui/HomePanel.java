@@ -11,12 +11,14 @@ import java.awt.*;
  */
 
 public class HomePanel extends JPanel{
-    private MainFrame mainFrame;    //reference back to the frame for switchin
+    private MainFrame mainFrame; //reference back to the frame for switchin
     private JLabel label;
     private JLabel statsLabel;
     private JButton viewSessionsButton;
     private JButton startButton;
     private StatsCalculator statsCalculator;
+    private LevelBadge levelBadge;
+    private JProgressBar expProgressBar;
 
     public HomePanel(MainFrame mainFrame, StatsCalculator statsCalculator){
         this.mainFrame = mainFrame;
@@ -29,8 +31,8 @@ public class HomePanel extends JPanel{
         label.setFont(Theme.FONT_TITLE);
         label.setForeground(Theme.TEXT_PRIMARY);
 
-        viewSessionsButton = createSecondaryButton("View Sessions");
-        startButton = createPrimaryButton("Start");
+        viewSessionsButton = ButtonCreator.secondary("View Sessions");
+        startButton = ButtonCreator.primary("Start");
 
         //button actions
         startButton.addActionListener(e -> mainFrame.showCard("setup"));
@@ -41,7 +43,39 @@ public class HomePanel extends JPanel{
         statsLabel.setFont(Theme.FONT_BUTTON);
         statsLabel.setForeground(Theme.TEXT_PRIMARY);
 
+        levelBadge = new LevelBadge(1);
+        expProgressBar = new JProgressBar(0, 100);
+        expProgressBar.setValue(0);
+        expProgressBar.setForeground(Theme.ACCENT);
+        expProgressBar.setBackground(Theme.ACCENT_BG);
+        expProgressBar.setBorder(BorderFactory.createLineBorder(Theme.BORDER, 1));
+        expProgressBar.setStringPainted(false);
+        expProgressBar.setPreferredSize(new Dimension(280, 16));
+        expProgressBar.setMaximumSize(new Dimension(280, 16));
+
         setLayout(new BorderLayout());
+
+        JPanel statsCard = new JPanel();
+        statsCard.setLayout(new BoxLayout(statsCard, BoxLayout.Y_AXIS));
+        statsCard.setBackground(Theme.SURFACE);
+        statsCard.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Theme.BORDER, 1),
+                BorderFactory.createEmptyBorder(24, 32, 24, 32)
+        ));
+
+        levelBadge.setAlignmentX(Component.CENTER_ALIGNMENT);
+        expProgressBar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        statsCard.add(levelBadge);
+        statsCard.add(Box.createVerticalStrut(16));
+        statsCard.add(expProgressBar);
+        statsCard.add(Box.createVerticalStrut(10));
+        statsCard.add(statsLabel);
+
+        JPanel cardWrapper = new JPanel(new GridBagLayout());
+        cardWrapper.setBackground(Theme.BACKGROUND);
+        cardWrapper.add(statsCard);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
@@ -50,7 +84,7 @@ public class HomePanel extends JPanel{
         buttonPanel.add(startButton);
 
         add(label, BorderLayout.NORTH);
-        add(statsLabel, BorderLayout.CENTER);
+        add(cardWrapper, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
         refreshStats();
@@ -61,8 +95,15 @@ public class HomePanel extends JPanel{
         String currentTitle = statsCalculator.getCurrentTitle();
         int totalExp = statsCalculator.getTotalExp();
         int expNeeded = statsCalculator.getExpNeededForNextLevel();
-
         String text;
+
+        levelBadge.setLevel(currentLevel);
+
+        if (currentLevel == 20) {
+            expProgressBar.setValue(100);
+        } else {
+            expProgressBar.setValue(100 - expNeeded);
+        }
 
         if (currentLevel == 20){
             text = "<html><div style='text-align: center;'>"
@@ -82,25 +123,5 @@ public class HomePanel extends JPanel{
         }
 
         statsLabel.setText(text);
-    }
-
-    private JButton createPrimaryButton(String text) {
-        JButton b = new JButton(text);
-        b.setFont(Theme.FONT_BUTTON);
-        b.setBackground(Theme.ACCENT);
-        b.setForeground(Theme.TEXT_ACCENT);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createEmptyBorder(10, 24, 10, 24));
-        return b;
-    }
-
-    private JButton createSecondaryButton(String text) {
-        JButton b = new JButton(text);
-        b.setFont(Theme.FONT_BUTTON);
-        b.setBackground(Theme.ACCENT_LIGHT);
-        b.setForeground(Theme.TEXT_PRIMARY);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createEmptyBorder(10, 24, 10, 24));
-        return b;
     }
 }

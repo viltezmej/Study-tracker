@@ -26,6 +26,9 @@ public class Theme {
     //border
     public static final Color BORDER = new Color(0xD4D8C8);
 
+    //border for cards
+    public static final Color ACCENT_BG = new Color(0xE8EFE0);
+
     //Fonts
     public static final Font FONT_TITLE = new Font("SansSerif", Font.BOLD, 28);
     public static final Font FONT_HEADING = new Font("SansSerif", Font.BOLD, 20);
