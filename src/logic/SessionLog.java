@@ -57,4 +57,15 @@ public class SessionLog {
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
+    // Overloaded constructor
+    public SessionLog(LocalDateTime date, String subjectName, int studiedSeconds, int expEarned) {
+        this.date = date;
+        this.subjectName = subjectName;
+        this.studiedSeconds = studiedSeconds;
+        this.expEarned = expEarned;
+    }
+
+    public LocalDateTime getDate() {
+        return this.date;
+    }
 }
