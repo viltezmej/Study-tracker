@@ -19,6 +19,7 @@ public class SessionPanel extends JPanel {
     private JTable sessionsTable;
     private DefaultTableModel tableModel;
     private JButton backButton;
+    private JButton clearButton;
 
     public SessionPanel(MainFrame mainFrame, SessionManager sessionManager) {
         this.mainFrame = mainFrame;
@@ -69,10 +70,13 @@ public class SessionPanel extends JPanel {
         backButton = ButtonCreator.secondary("Back");
         backButton.addActionListener(e -> mainFrame.showCard("home"));
 
+        clearButton = ButtonCreator.destructive("Clear History");
+        clearButton.addActionListener(e -> handleClearClicked());
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
         buttonPanel.setBackground(Theme.BACKGROUND);
         buttonPanel.add(backButton);
+        buttonPanel.add(clearButton);
 
         setLayout(new BorderLayout(0, 20));
         add(titleLabel, BorderLayout.NORTH);
@@ -97,5 +101,20 @@ public class SessionPanel extends JPanel {
             };
             tableModel.addRow(row);
         }
+    }
+
+    private void handleClearClicked(){
+        //confirm before data destruction
+        int choice = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to delete all session history? This cannot be undone.",
+                "Clear History",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (choice == JOptionPane.YES_OPTION) {
+            mainFrame.clearHistory();
+        }
+
     }
 }

@@ -55,7 +55,7 @@ public class MainFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         showCard("home");
-
+        frame.setResizable(false);
         frame.setVisible(true);
     }
 
@@ -118,5 +118,11 @@ public class MainFrame {
     public void showSessions() {
         sessionPanel.refresh();
         showCard("sessions");
+    }
+
+    public void clearHistory(){
+        sessionManager.clearSessionLogs();
+        sessionPanel.refresh();
+        homePanel.refreshStats();
     }
 }

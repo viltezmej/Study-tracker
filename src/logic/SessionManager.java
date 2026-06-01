@@ -78,6 +78,11 @@ public class SessionManager {
         //TODO: trigger EXP penalty in StatsCalculator
     }
 
+    //clears all session logs
+    public void clearSessionLogs(){
+        sessionLogs.clear();
+    }
+
     public void saveCurrentSession(int expEarned){
         if (currentSessionSaved){
             return;
