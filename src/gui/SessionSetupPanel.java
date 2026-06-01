@@ -166,6 +166,6 @@ public class SessionSetupPanel extends JPanel {
     }
 
     private void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Invalid input", JOptionPane.WARNING_MESSAGE);
+        Dialogs.showMessage(this, "Invalid input", message);
     }
 }

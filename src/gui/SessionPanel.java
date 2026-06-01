@@ -105,16 +105,10 @@ public class SessionPanel extends JPanel {
 
     private void handleClearClicked(){
         //confirm before data destruction
-        int choice = JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to delete all session history? This cannot be undone.",
-                "Clear History",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-        );
-
-        if (choice == JOptionPane.YES_OPTION) {
+        boolean confirmed = Dialogs.confirm(this, "Clear History",
+                "Are you sure you want to delete all session history? This cannot be undone.");
+        if(confirmed){
             mainFrame.clearHistory();
         }
-
     }
 }
