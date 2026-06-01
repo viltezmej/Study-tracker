@@ -32,6 +32,14 @@ public class MainFrame {
         sessionManager = new SessionManager();
         statsCalculator = new StatsCalculator();
 
+        //Load files from disk
+        int savedExp = logic.CSVHandler.loadStats();
+        statsCalculator.setTotalExp(savedExp);
+
+        java.util.ArrayList<logic.SessionLog> savedLogs = logic.CSVHandler.loadHistory();
+        sessionManager.getSessionLogs().addAll(savedLogs);
+        //end
+
         cardLayout = new CardLayout();
         cardContainer = new JPanel(cardLayout);
 
@@ -94,6 +102,11 @@ public class MainFrame {
 
         sessionManager.saveCurrentSession(expEarned);
 
+        //Save data changes to disk
+        logic.CSVHandler.saveStats(statsCalculator.getTotalExp());
+        logic.CSVHandler.saveHistory(sessionManager.getSessionLogs());
+        //end
+
         sessionPanel.refresh();
         homePanel.refreshStats();
 
@@ -109,6 +122,11 @@ public class MainFrame {
 
         sessionManager.saveCurrentSession(expEarned);
 
+        //Save data changes to disk
+        logic.CSVHandler.saveStats(statsCalculator.getTotalExp());
+        logic.CSVHandler.saveHistory(sessionManager.getSessionLogs());
+        //end
+
         sessionPanel.refresh();
         homePanel.refreshStats();
 
@@ -122,6 +140,11 @@ public class MainFrame {
 
     public void clearHistory(){
         sessionManager.clearSessionLogs();
+
+        //Save empty history state to disk
+        logic.CSVHandler.saveHistory(sessionManager.getSessionLogs());
+        //end
+
         sessionPanel.refresh();
         homePanel.refreshStats();
     }
