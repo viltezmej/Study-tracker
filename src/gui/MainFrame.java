@@ -59,6 +59,7 @@ public class MainFrame {
     public void setUpGUI() {
         frame.setContentPane(cardContainer);
         frame.setSize(width,height);
+        frame.setLocationRelativeTo(null);
         frame.setTitle("Study Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -84,9 +85,6 @@ public class MainFrame {
     }
 
     //sets up active session panel for new session and shows it
-    //TODO: also call sessionManager here once SessionManager exists
-    // MainFrame coordinates between GUI and logic
-
     public void startActiveSession(int minutes, String subjectName) {
         sessionManager.startSession(minutes, subjectName);
         activeSessionPanel.setDuration(minutes);
@@ -117,7 +115,7 @@ public class MainFrame {
         activeSessionPanel.stopTimer();
         sessionManager.endSessionEarly();
 
-        int expEarned = statsCalculator.calculatEarlyEndPenalty(sessionManager.getStudiedTime());
+        int expEarned = statsCalculator.calculateEarlyEndPenalty(sessionManager.getTargetTime());
         statsCalculator.addExp(expEarned); //this will be negative
 
         sessionManager.saveCurrentSession(expEarned);

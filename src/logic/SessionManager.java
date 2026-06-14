@@ -42,10 +42,6 @@ public class SessionManager {
         currentSessionSaved = false;
         currentSubject = subjectName;
     }
-    //tmp
-    public void startSession(int minutes) {
-        startSession(minutes, "");
-    }
 
     //called once every second by the GUI timer
     public void tick(){
@@ -75,7 +71,6 @@ public class SessionManager {
         running = false;
         finished = true;
 
-        //TODO: trigger EXP penalty in StatsCalculator
     }
 
     //clears all session logs
@@ -92,20 +87,7 @@ public class SessionManager {
         sessionLogs.add(log);
 
         currentSessionSaved = true;
-        //TODO: later save this log using FileHandler
     }
-
-//    private int calculateExp(boolean completed) {
-//        int studiedMinutes = studiedTime / 60;
-//
-//        if (completed) {
-//            return studiedMinutes;
-//        }
-//
-//        //temp penalty until the final lvl system is implemented
-//        //TODO: decide exact penalty
-//        return -5;
-//    }
 
     public ArrayList<SessionLog> getSessionLogs(){
         return sessionLogs;

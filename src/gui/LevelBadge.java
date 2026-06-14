@@ -3,6 +3,10 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * circular badge that displays the current level number
+ */
+
 public class LevelBadge extends JComponent {
     private int level;
     private static final int SIZE = 72;

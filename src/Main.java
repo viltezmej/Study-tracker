@@ -6,7 +6,7 @@ public class Main {
         System.setProperty("awt.useSystemAAFontSettings", "on");
         System.setProperty("swing.aatext", "true"); //to fix font
 
-        MainFrame gd = new MainFrame(640, 480);
-        gd.setUpGUI();
+        MainFrame mainFrame = new MainFrame(640, 480);
+        mainFrame.setUpGUI();
     }
 }

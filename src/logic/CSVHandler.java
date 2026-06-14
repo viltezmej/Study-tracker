@@ -3,6 +3,11 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * Reads and writes app data to CSV files
+ * Saves total exp to user_stats.csv and session history to study_history.csv
+ */
+
 public class CSVHandler {
     private static final String STATS_FILE = "user_stats.csv";
     private static final String HISTORY_FILE = "study_history.csv";

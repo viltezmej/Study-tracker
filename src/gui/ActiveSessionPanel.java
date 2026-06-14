@@ -22,7 +22,7 @@ public class ActiveSessionPanel extends JPanel{
 
 
 
-    public ActiveSessionPanel(MainFrame mainFrame, SessionManager sessionManager){
+    public ActiveSessionPanel(MainFrame mainFrame, SessionManager sessionManager) {
         this.mainFrame = mainFrame;
         this.sessionManager = sessionManager;
 
@@ -37,8 +37,8 @@ public class ActiveSessionPanel extends JPanel{
         statusLabel.setFont(Theme.FONT_BODY);
         statusLabel.setForeground(Theme.TEXT_PRIMARY);
 
-        endButton = createEndButton("End Session");
-        breakButton = createSecondaryButton("Break");
+        endButton = ButtonCreator.destructive("End Session");
+        breakButton = ButtonCreator.secondary("Break");
 
         swingTimer = new Timer(1000, e -> updateTimer());
 
@@ -71,33 +71,17 @@ public class ActiveSessionPanel extends JPanel{
         setLayout(new BorderLayout());
         add(centerPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
-//        //TODO: ending should also call SessionManager. It currently just navigates bacK
-//        // so no session data or XP penalty is recorded
-//        endButton.addActionListener(e -> mainFrame.showCard("home"));
-//
-//        JPanel buttonPanel = new JPanel();
-//        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
-//        buttonPanel.setBackground(Theme.BACKGROUND);
-//        buttonPanel.add(breakButton);
-//        buttonPanel.add(endButton);
-//
-//        setLayout(new BorderLayout());
-//        add(timerLabel, BorderLayout.CENTER);
-//        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     //sets how long this session should run. call before showing panel.
      //@param minutes target duration in minutes
 
-    //TODO: once SessionManager exists, the panel wont need to store targetMinutes
-    // in theory it should just call sessionManager.getRemainingSeconds()
     public void setDuration(int minutes){
         this.targetMinutes = minutes;
         timerLabel.setText(formatTime(minutes * 60));
     }
 
     //start the visual timer
-
     public void startTimer(){
         timerLabel.setText(formatTime(sessionManager.getRemainingTime()));
         statusLabel.setText("Studying in progress");
@@ -119,7 +103,6 @@ public class ActiveSessionPanel extends JPanel{
     }
 
     //update timer once per second
-
     private void updateTimer(){
         sessionManager.tick();
         timerLabel.setText(formatTime(sessionManager.getRemainingTime()));
@@ -147,25 +130,4 @@ public class ActiveSessionPanel extends JPanel{
         int seconds = totalSeconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
-
-    private JButton createEndButton(String text) {
-        JButton b = new JButton(text);
-        b.setFont(Theme.FONT_BUTTON);
-        b.setBackground(Theme.ACCENT_DARK);
-        b.setForeground(Theme.TEXT_ACCENT);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createEmptyBorder(10, 24, 10, 24));
-        return b;
-    }
-
-    private JButton createSecondaryButton(String text) {
-        JButton b = new JButton(text);
-        b.setFont(Theme.FONT_BUTTON);
-        b.setBackground(Theme.ACCENT_LIGHT);
-        b.setForeground(Theme.TEXT_PRIMARY);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createEmptyBorder(10, 24, 10, 24));
-        return b;
-    }
-
 }

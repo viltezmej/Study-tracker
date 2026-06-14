@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class HomePanel extends JPanel{
     private MainFrame mainFrame; //reference back to the frame for switchin
-    private JLabel label;
+    private JLabel titleLabel;
     private JLabel statsLabel;
     private JButton viewSessionsButton;
     private JButton startButton;
@@ -27,9 +27,9 @@ public class HomePanel extends JPanel{
         setBackground(Theme.BACKGROUND);
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-        label = new JLabel("Study Tracker", SwingConstants.CENTER);
-        label.setFont(Theme.FONT_TITLE);
-        label.setForeground(Theme.TEXT_PRIMARY);
+        titleLabel = new JLabel("Study Tracker", SwingConstants.CENTER);
+        titleLabel.setFont(Theme.FONT_TITLE);
+        titleLabel.setForeground(Theme.TEXT_PRIMARY);
 
         viewSessionsButton = ButtonCreator.secondary("View Sessions");
         startButton = ButtonCreator.primary("Start");
@@ -38,7 +38,6 @@ public class HomePanel extends JPanel{
         startButton.addActionListener(e -> mainFrame.showCard("setup"));
         viewSessionsButton.addActionListener(e -> mainFrame.showSessions());
 
-        //statsLabel = new JLabel("<html><div style='text-align: center;'>Welcome back!<br><br>Your stats will appear here.</div></html>", SwingConstants.CENTER);
         statsLabel = new JLabel("", SwingConstants.CENTER);
         statsLabel.setFont(Theme.FONT_BUTTON);
         statsLabel.setForeground(Theme.TEXT_PRIMARY);
@@ -83,7 +82,7 @@ public class HomePanel extends JPanel{
         buttonPanel.add(viewSessionsButton);
         buttonPanel.add(startButton);
 
-        add(label, BorderLayout.NORTH);
+        add(titleLabel, BorderLayout.NORTH);
         add(cardWrapper, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 

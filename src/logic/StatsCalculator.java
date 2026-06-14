@@ -3,8 +3,6 @@ package logic;
 /**
  * Calculates EXP, levels, and level titles.
  * Part of the logic layer.
- *
- * TODO: when file saving is added, totalExp can be loaded from a file
  */
 
 public class StatsCalculator {
@@ -46,7 +44,7 @@ public class StatsCalculator {
         return studiedMinutes + COMPLETION_BONUS;
     }
 
-    public int calculatEarlyEndPenalty(int targetMinutes){
+    public int calculateEarlyEndPenalty(int targetMinutes){
         int penalty = targetMinutes / 2;
 
         if(penalty < 5){

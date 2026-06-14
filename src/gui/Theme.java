@@ -4,7 +4,6 @@ import java.awt.*;
 
 /**
  * central color and font definitions for the program
- * theme FOR NOW: sage
  * change values here to update the look across all panels
  */
 

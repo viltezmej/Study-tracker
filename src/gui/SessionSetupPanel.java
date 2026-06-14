@@ -46,7 +46,6 @@ public class SessionSetupPanel extends JPanel {
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
 
-        //TODO: preset are currently hardcoded and they could come from the logic layer.
         preset15 = ButtonCreator.preset("15");
         preset30 = ButtonCreator.preset("30");
         preset45 = ButtonCreator.preset("45");
@@ -138,7 +137,6 @@ public class SessionSetupPanel extends JPanel {
     }
 
     //resets panel to its default state, call before showing it
-    //once timer is real, this function will also need to be called for ActiveSessionPanel
     public void reset(){
         minutesField.setText("");
         subjectField.setText("");
@@ -156,12 +154,15 @@ public class SessionSetupPanel extends JPanel {
             return;
         }
 
-        // TODO: move this check into SessionManager once it exists
         if(minutes <= 0){
             showError("Please enter a positive number of minutes.");
             return;
         }
         String subjectName = subjectField.getText().trim();
+        if (subjectName.contains(";")){
+            showError("Subject name cannot contain semicolons.");
+            return;
+        }
         mainFrame.startActiveSession(minutes, subjectName);
     }
 
